@@ -1,0 +1,44 @@
+ESPConfigFile	KEYWORD1
+
+addBoolParameter	KEYWORD2
+addIntParameter	KEYWORD2
+addFloatParameter	KEYWORD2
+addStringParameter	KEYWORD2
+setBoolParameter	KEYWORD2
+setIntParameter	KEYWORD2
+setFloatParameter	KEYWORD2
+setStringParameter	KEYWORD2
+getBoolParameter	KEYWORD2
+getIntParameter	KEYWORD2
+getFloatParameter	KEYWORD2
+getStringParameter	KEYWORD2
+load	KEYWORD2
+store	KEYWORD2
+clear	KEYWORD2
+
+ESPWiFiInterfaceOSC	KEYWORD1
+ESPWiFiInterfaceWebServer	KEYWORD1
+
+startWiFi   KEYWORD2
+stopWiFi	KEYWORD2
+update	KEYWORD2
+getMode	KEYWORD2
+setConnectionStateListener	KEYWORD2
+enableDHCP	KEYWORD2
+setStaticIP	KEYWORD2
+setGatewayIP	KEYWORD2
+setSubnetIP	KEYWORD2
+
+setHostIP	KEYWORD2
+setUdpInputPort	KEYWORD2
+setUdpOutputPort	KEYWORD2
+sendUdpOSCMessage	KEYWORD2
+addOSCMessageListener	KEYWORD2
+removeOSCMessageListeners	KEYWORD2
+
+setRootWebPage	KEYWORD2
+setSocketConnectionListener	KEYWORD2
+setSocketDisconnectionListener	KEYWORD2
+setSocketTextMessageListener	KEYWORD2
+sendTextMessageToSocket	KEYWORD2
+broadcastTextMessagesToSockets	KEYWORD2
