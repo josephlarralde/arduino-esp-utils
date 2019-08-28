@@ -68,17 +68,17 @@ ESPWiFiInterfaceWebServer::setRootWebPage(const char *page) {
 }
 
 void
-ESPWiFiInterfaceWebServer::setSocketConnectionListener(void (*callback)(uint8_t num)) {
+ESPWiFiInterfaceWebServer::setSocketConnectionListener(std::function<void(uint8_t)> callback) {
   socketConnectionListener = callback;
 }
 
 void
-ESPWiFiInterfaceWebServer::setSocketDisconnectionListener(void (*callback)(uint8_t num)) {
+ESPWiFiInterfaceWebServer::setSocketDisconnectionListener(std::function<void(uint8_t)> callback) {  
   socketDisconnectionListener = callback;
 }
 
 void
-ESPWiFiInterfaceWebServer::setSocketTextMessageListener(void (*callback)(uint8_t num, const char *message, size_t length)) {
+ESPWiFiInterfaceWebServer::setSocketTextMessageListener(std::function<void(uint8_t, const char *, size_t)> callback) {
   socketTextMessageListener = callback;
 }
 

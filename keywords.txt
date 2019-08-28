@@ -16,6 +16,13 @@ load	KEYWORD2
 store	KEYWORD2
 clear	KEYWORD2
 
+ESPEventEmitter	KEYWORD1
+
+addListener	KEYWORD2
+removeListeners	KEYWORD2
+removeAllListeners	KEYWORD2
+
+ESPWiFiInterfaceBase	KEYWORD1
 ESPWiFiInterfaceOSC	KEYWORD1
 ESPWiFiInterfaceWebServer	KEYWORD1
 

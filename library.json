@@ -1,7 +1,7 @@
 {
-  "name": "esp-utils",
-  "keywords": "esp8266, esp32, WiFi, OSC, Web, Server, WebSocket, Configuration, File, SPIFFS",
-  "description": "Collection of utility classes facilitating configuration files management and various wifi tasks.",
+  "name": "arduino-esp-utils",
+  "keywords": "esp8266, esp32, WiFi, OSC, Web, Server, WebSocket, Configuration, File, SPIFFS, event, emitter",
+  "description": "A collection of utility classes facilitating configuration files management, implementation of several wifi scenarios, and various other tasks.",
   "authors": [
     {
       "name": "Joseph Larralde",
@@ -16,10 +16,6 @@
     },
     {
       "name": "WebSockets",
-      "frameworks": "arduino"
-    },
-    {
-      "name": "EventEmitter",
       "frameworks": "arduino"
     }
   ],

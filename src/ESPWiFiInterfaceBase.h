@@ -30,8 +30,9 @@ private:
   bool accessPointRunning;
   bool dhcpOn;
 
-  WiFiConnectionState connectionState;
-  void (*connectionStateCallback)(WiFiConnectionState state);
+protected:
+  WiFiConnectionState connectionState;  
+  std::function<void(WiFiConnectionState)> connectionStateCallback;
 
 public:
   ESPWiFiInterfaceBase();
@@ -42,12 +43,13 @@ public:
   virtual void update();
 
   virtual WiFiMode_t getMode();
-  virtual void setConnectionStateListener(void (*callback)(WiFiConnectionState state));
+  virtual void setConnectionStateListener(std::function<void(WiFiConnectionState)> callback);
 
   virtual void enableDHCP(bool e);
   virtual void setStaticIP(IPAddress ip, bool autoConfig = true);
   virtual void setGatewayIP(IPAddress ip);
   virtual void setSubnetIP(IPAddress ip);
+  virtual void getMacAddress(uint8_t *mac); // mac should be a uint8_t array of length 6
 
 protected:
   bool isActive();

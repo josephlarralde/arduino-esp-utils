@@ -5,19 +5,19 @@
 
 #include <WiFiUdp.h>
 #include <OSCMessage.h>
-#include <EventEmitter.h>
+#include "ESPEventEmitter.h"
 
 class ESPWiFiInterfaceOSC : public ESPWiFiInterfaceBase {
 private:
 
   /****************************************************************************/
 
-  class OSCMessageEventEmitter : public EventEmitter<OSCMessage&> {
+  class OSCMessageEventEmitter : public ESPEventEmitter<OSCMessage&> {
   private:
     char address[128]; // maximum osc address length
     
   public:
-    OSCMessageEventEmitter() : EventEmitter<OSCMessage&>() {}
+    OSCMessageEventEmitter() : ESPEventEmitter<OSCMessage&>() {}
     ~OSCMessageEventEmitter() {}
 
     void emitOSCMessage(OSCMessage& msg) {
@@ -49,8 +49,8 @@ public:
   void setUdpOutputPort(int port);
 
   void sendUdpOSCMessage(OSCMessage& msg);
-  void addOSCMessageListener(const char *event, void (*callback)(OSCMessage& msg));
-  void removeOSCMessageListeners();  
+  void addOSCMessageListener(const char *event, std::function<void(OSCMessage&)> callback);
+  void removeOSCMessageListeners();
 };
 
 #endif /* _ESP_WIFI_INTERFACE_OSC_H_ */

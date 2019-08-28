@@ -1,4 +1,4 @@
-# esp-utils
+# arduino-esp-utils
 
 ### A collection of utility classes for esp8266 and esp32 chips
 

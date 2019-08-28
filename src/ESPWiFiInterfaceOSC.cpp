@@ -72,8 +72,7 @@ ESPWiFiInterfaceOSC::sendUdpOSCMessage(OSCMessage& msg) {
 }
 
 void
-ESPWiFiInterfaceOSC::addOSCMessageListener(const char *event,
-                                           void (*callback)(OSCMessage& msg)) {
+ESPWiFiInterfaceOSC::addOSCMessageListener(const char *event, std::function<void(OSCMessage&)> callback) {
   oscEmitter.addListener(event, callback);
 }
 

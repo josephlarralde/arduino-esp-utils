@@ -1,5 +1,11 @@
 #include "ESPWiFiInterfaceBase.h"
 
+#ifdef ESP32
+// how to read mac address, found here :
+// https://github.com/espressif/arduino-esp32/issues/932
+#include "esp_system.h"
+#endif
+
 ESPWiFiInterfaceBase::ESPWiFiInterfaceBase() :
 mode(WIFI_OFF),
 #ifdef ESP8266
@@ -21,7 +27,11 @@ void
 ESPWiFiInterfaceBase::startWiFi(WiFiMode_t mode,
                                 const char *ssid, const char *pass) {
   if (mode != WIFI_STA && mode != WIFI_AP) return;
-  if (isActive()) { stopWiFi(); }
+
+  connectionState = WiFiConnecting;
+  if (connectionStateCallback != NULL) {
+    connectionStateCallback(connectionState);
+  }
 
   this->mode = mode;
   WiFi.mode(mode);
@@ -34,8 +44,8 @@ ESPWiFiInterfaceBase::startWiFi(WiFiMode_t mode,
   }
 #endif
 
-// to turn back dhcp on, see :
-// https://stackoverflow.com/questions/40069654/how-to-clear-static-ip-configuration-and-start-dhcp
+  // to turn back dhcp on, see :
+  // https://stackoverflow.com/questions/40069654/how-to-clear-static-ip-configuration-and-start-dhcp
 
   switch (mode) {
     case WIFI_STA: {
@@ -43,11 +53,6 @@ ESPWiFiInterfaceBase::startWiFi(WiFiMode_t mode,
           WiFi.config(0u, 0u, 0u);
         } else {
           WiFi.config(staticIP, gatewayIP, subnetIP);
-        }
-
-        connectionState = WiFiConnecting;
-        if (connectionStateCallback != NULL) {
-          connectionStateCallback(connectionState);
         }
 
         WiFi.begin(ssid, pass);
@@ -79,7 +84,6 @@ ESPWiFiInterfaceBase::startWiFi(WiFiMode_t mode,
 
 void
 ESPWiFiInterfaceBase::stopWiFi() {
-  // delete stored credentials
   WiFi.disconnect();
   WiFi.softAPdisconnect();
   accessPointRunning = false;
@@ -87,7 +91,9 @@ ESPWiFiInterfaceBase::stopWiFi() {
   WiFi.mode(WIFI_OFF);
   
 #ifdef ESP8266
+  if (alreadyStarted) {
     WiFi.forceSleepBegin();
+  }
 #endif
 
   connectionState = WiFiDisconnected;
@@ -112,7 +118,7 @@ ESPWiFiInterfaceBase::getMode() {
 }
 
 void
-ESPWiFiInterfaceBase::setConnectionStateListener(void (*callback)(WiFiConnectionState state)) {
+ESPWiFiInterfaceBase::setConnectionStateListener(std::function<void(WiFiConnectionState)> callback) {
   connectionStateCallback = callback;
 }
 
@@ -140,6 +146,15 @@ ESPWiFiInterfaceBase::setGatewayIP(IPAddress ip) {
 void
 ESPWiFiInterfaceBase::setSubnetIP(IPAddress ip) {
   subnetIP = ip;
+}
+
+void
+ESPWiFiInterfaceBase::getMacAddress(uint8_t *mac) {
+#ifdef ESP8266
+  WiFi.macAddress(static_cast<byte *>(mac));
+#elif defined(ESP32)
+  esp_read_mac(mac, ESP_MAC_WIFI_STA);
+#endif
 }
 
 bool

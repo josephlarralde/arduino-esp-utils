@@ -1,14 +1,14 @@
 #ifndef _ESP_WIFI_INTERFACE_WEB_SERVER_H_
 #define _ESP_WIFI_INTERFACE_WEB_SERVER_H_
 
+#include "ESPWiFiInterfaceBase.h"
+#include <WebSocketsServer.h>
+
 #ifdef ESP8266
 #include <ESP8266WebServer.h>
 #elif defined(ESP32)
 #include <WebServer.h>
 #endif
-
-#include <WebSocketsServer.h>
-#include "ESPWiFiInterfaceBase.h"
 
 class ESPWiFiInterfaceWebServer : public ESPWiFiInterfaceBase {
 private:
@@ -22,9 +22,10 @@ private:
   WebSocketsServer *socketServer;
 
   const char *rootWebPage;
-  void (*socketConnectionListener)(uint8_t num);
-  void (*socketDisconnectionListener)(uint8_t num);
-  void (*socketTextMessageListener)(uint8_t num, const char *message, size_t length);
+  
+  std::function<void(uint8_t)> socketConnectionListener;
+  std::function<void(uint8_t)> socketDisconnectionListener;
+  std::function<void(uint8_t, const char *, size_t)> socketTextMessageListener;
 
 public:
   ESPWiFiInterfaceWebServer(int webPort = 80, int socketPort = 81);
@@ -35,9 +36,11 @@ public:
   void update();
 
   void setRootWebPage(const char *page);
-  void setSocketConnectionListener(void (*callback)(uint8_t num));
-  void setSocketDisconnectionListener(void (*callback)(uint8_t num));
-  void setSocketTextMessageListener(void (*callback)(uint8_t num, const char *message, size_t length));
+
+  void setSocketConnectionListener(std::function<void(uint8_t)> callback);
+  void setSocketDisconnectionListener(std::function<void(uint8_t)> callback);
+  void setSocketTextMessageListener(std::function<void(uint8_t, const char *, size_t)> callback);
+
   void sendTextMessageToSocket(uint8_t num, const char *message);
   void broadcastTextMessageToSockets(const char *message);
 
